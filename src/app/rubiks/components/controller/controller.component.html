@@ -1,0 +1,9 @@
+<app-scanner (scanned)="onScanned($event)"></app-scanner>
+
+<div *ngIf="scannedCube">
+  <button (click)="solveCube()">Show Solution Steps</button>
+</div>
+
+<div *ngIf="showCube">
+  <app-cube-3d [moves]="solutionMoves"></app-cube-3d>
+</div>

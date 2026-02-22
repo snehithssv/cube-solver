@@ -1,0 +1,46 @@
+<div class="scanner-container">
+  <h2>Scan Face: {{ currentFace }}</h2>
+
+  <div class="camera-wrapper">
+    <video #video autoplay playsinline></video>
+    <div class="grid-overlay">
+      <!-- FIXED: Modern loop for the 9 grid squares -->
+      @for (i of [1,2,3,4,5,6,7,8,9]; track $index) {
+        <div></div>
+      }
+    </div>
+  </div>
+
+  <canvas #canvas hidden></canvas>
+  <button (click)="capture()">Capture</button>
+
+  <div class="mini-cube">
+    <svg width="200" height="150">
+      <rect x="50" y="0" width="50" height="50" [attr.fill]="highlightFace('U')"></rect>
+      <rect x="0" y="50" width="50" height="50" [attr.fill]="highlightFace('L')"></rect>
+      <rect x="50" y="50" width="50" height="50" [attr.fill]="highlightFace('F')"></rect>
+      <rect x="100" y="50" width="50" height="50" [attr.fill]="highlightFace('R')"></rect>
+      <rect x="50" y="100" width="50" height="50" [attr.fill]="highlightFace('D')"></rect>
+      <rect x="150" y="50" width="50" height="50" [attr.fill]="highlightFace('B')"></rect>
+    </svg>
+  </div>
+
+  <!-- FIXED: Modern @if syntax -->
+  @if (detectedGrid.length) {
+    <div class="preview-grid">
+      <!-- FIXED: Nested @for syntax -->
+      @for (row of detectedGrid; track $index; let r = $index) {
+        <div class="row">
+          @for (col of row; track $index; let c = $index) {
+            <div
+              [style.background]="scanService.mapColor(col)"
+              (click)="editColor(r,c)">
+            </div>
+          }
+        </div>
+      }
+    </div>
+    
+    <button (click)="confirmFace()">Confirm Face</button>
+  }
+</div>
